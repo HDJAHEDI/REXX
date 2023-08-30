@@ -2,5 +2,11 @@
 ID=KMP
 Version=5
 [KEYBOARD]
-KEY108=[enter/ctrl]
-S-KEY108=[enter/ctrl]
+C-KEY47=[edit-cut]
+CS-KEY47=[edit-cut]
+C-KEY48=[edit-copy]
+CS-KEY48=[edit-copy]
+C-KEY49=[edit-paste]
+CS-KEY49=[edit-paste]
+KEY108=[enter]
+S-KEY108=[enter]
