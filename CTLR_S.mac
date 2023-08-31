@@ -1,0 +1,8 @@
+Description =
+[wait app]
+[pf24]
+[wait app]
+[erase eof]
+"RES;SAVE;
+[enter]
+

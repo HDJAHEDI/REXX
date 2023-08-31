@@ -52,5 +52,8 @@ End
 If dslist = '' Then
   "FREE DD("reqdd")"
 Else
-  'ALLOC DD('reqdd') DA('dslist') SHR REU'
+  DO
+  SAY 'ALLOC DD('reqdd') DA('dslist') SHR REU';
+      'ALLOC DD('reqdd') DA('dslist') SHR REU';
+  END
 

@@ -2,12 +2,17 @@
 ID=KMP
 Version=5
 [KEYBOARD]
+C-KEY32=macro CTLR_S
+CS-KEY32=macro CTLR_S
 C-KEY47=[edit-cut]
 CS-KEY47=[edit-cut]
 C-KEY48=[edit-copy]
 CS-KEY48=[edit-copy]
 C-KEY49=[edit-paste]
 CS-KEY49=[edit-paste]
+KEY80=[backtab word]
+S-KEY80=[backtab word]
+C-KEY80=[home]
 KEY81=[end field]
 S-KEY81=[end field]
 C-KEY81=[erase eof]
