@@ -2,6 +2,8 @@
 ID=KMP
 Version=5
 [KEYBOARD]
+C-KEY27='['
+C-KEY28=']'
 C-KEY32=macro CTLR_S
 CS-KEY32=macro CTLR_S
 C-KEY47=[edit-cut]
