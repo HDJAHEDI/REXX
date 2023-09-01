@@ -25,6 +25,7 @@ If _INST = '?'| Abbrev('HELP',Translate(_INST),1) Then Call HELP
 Else args = _inst
 /*  go to interactive mode */
 
+Address TSO 'CLRSCRN'   /* this is not a standard tso command */
 Say 'You may now enter REXX instructions interactively'
 Say 'by following each line with <ENTER>.'
 Say

@@ -1,0 +1,12 @@
+Description =
+[wait app]
+[edit-copy]
+[pf24]
+[wait app]
+[erase eof]
+"F "
+[edit-paste]
+[end field]
+"";
+[enter]
+
