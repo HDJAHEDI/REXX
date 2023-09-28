@@ -1,16 +1,18 @@
 /* REXX */
 /* -------------------------------------------------------------------*/
-CALL   ON ERROR   NAME SIGNAL_ERROR  ;
+SIGNAL ON ERROR   NAME SIGNAL_ERROR  ;
 SIGNAL ON SYNTAX  NAME SIGNAL_SYNTAX ;
 SIGNAL ON NOVALUE NAME SIGNAL_NOVALUE;
-CALL   ON FAILURE NAME SIGNAL_FAILURE;
-CALL   ON HALT    NAME SIGNAL_HALT   ;
-PARSE SOURCE  #OS #CALL #NAME #SYSID #DSN #REST
+SIGNAL ON FAILURE NAME SIGNAL_FAILURE;
+SIGNAL ON HALT    NAME SIGNAL_HALT   ;
+PARSE  SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
 /* ADD YOUR CODE HERE */
-ADDRESS TSO "LISTD";
+CMD = "SUBCOM LINK";
+ADDRESS MVS   CMD ;
+SAY '++> RC: ' || RC;
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:
