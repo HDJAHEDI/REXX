@@ -1,16 +1,22 @@
 /* REXX */
 /* -------------------------------------------------------------------*/
-CALL   ON ERROR   NAME SIGNAL_ERROR  ;
 SIGNAL ON SYNTAX  NAME SIGNAL_SYNTAX ;
+SIGNAL ON ERROR   NAME SIGNAL_ERROR  ;
 SIGNAL ON NOVALUE NAME SIGNAL_NOVALUE;
-CALL   ON FAILURE NAME SIGNAL_FAILURE;
-CALL   ON HALT    NAME SIGNAL_HALT   ;
+SIGNAL ON FAILURE NAME SIGNAL_FAILURE;
+SIGNAL ON HALT    NAME SIGNAL_HALT   ;
 PARSE SOURCE  #OS #CALL #NAME #SYSID #DSN #REST
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
-/* ADD YOUR CODE HERE */
-ADDRESS TSO "LISTD";
+LINE. = '';
+DSN = 'TSOXA14.DATA.TEST';
+ADDRESS TSO "ALLOC DDNAME(INDD) DA('" || DSN || "') SHR REUSE";
+ADDRESS MVS "EXECIO * DISKR INDD 1 (STEM LINE. OPEN FINIS)";
+ADDRESS TSO "FREE DDNAME(INDD)";
+DO I = 1 TO LINE.0
+   SAY '++> ' || LINE.I
+END
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:
