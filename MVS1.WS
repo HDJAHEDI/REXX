@@ -44,7 +44,7 @@ OtherRuleLine=FFFF00
 [Edit]
 TrimRectSizingHandles=N
 TrimRectJumpToChar=N
-TrimRectAsSolid=Y
+TrimRectAsSolid=N
 ClipWhenTrimRectOnly=Y
 [Macro]
 DIR=C:\Users\IBM\REXX
