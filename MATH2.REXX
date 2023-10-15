@@ -34,7 +34,7 @@ SAY '++ >> You entered ' || A  || ' and ' || B || '.';
 SAY '++ >> ' || A || ' + ' || B ' = ' A + B;
 SAY '++ >> ' || A || ' - ' || B ' = ' A - B;
 SAY '++ >> ' || A || ' * ' || B ' = ' A * B;
-IF B ¬= 0 THEN
+IF B ï¿½= 0 THEN
  DO
   SAY '++ >> ' || A || ' / ' || B ' = ' A / B;
   D = A % B;
@@ -69,7 +69,7 @@ SIGNAL OFF NOVALUE;
 SAY '!!> Novalue Exception trapped. ';
 CALL EXIT_X 300,SIGL
 /* -------------------------------------------------------------------*/
-SIGNAL_FAILURE
+SIGNAL_FAILURE:
 SIGNAL OFF FAILURE;
 SAY '!!> Failure Exception trapped. ';
 CALL EXIT_X 400,SIGL
