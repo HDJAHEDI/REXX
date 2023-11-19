@@ -24,7 +24,7 @@ Language=United-States
 DefaultKeyboard=C:\Users\IBM\REXX\Keymap.kmp
 IBMDefaultKeyboard=N
 [LastExitView]
-A=3 78 78 736 440 7 9 10 400 0 IBM3270— 37
+A=4 78 78 896 510 7 13 26 400 0 IBM3270— 37
 [Window]
 ViewFlags=CF00
 CaptionFormat=2E -
@@ -48,3 +48,6 @@ TrimRectAsSolid=N
 ClipWhenTrimRectOnly=Y
 [Macro]
 DIR=C:\Users\IBM\REXX
+[Poppad]
+PoppadLeft=707
+PoppadTop=360
