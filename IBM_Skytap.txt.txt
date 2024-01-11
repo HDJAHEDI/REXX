@@ -1,0 +1,20 @@
+downlaod and install AnyDesk
+Download and Install VScode
+Download and Install Git desktop
+Login to Github account
+open Git bash:
+git clone https://github.com/HDJAHEDI/REXX
+open VScode
+Install Git Lenz extesion
+Install Rexx language extension (Broadcom)
+Install JCL  language extension (Broadcom)
+Open IBM Personal commiunications
+logon
+pfshow off
+swapbar \
+swapbar
+setting -> function keys -> 9 (disable)
+set PF2 , PF14 to NOP
+set PF9  to SWAP NEXT
+set PF21 to SWAP PREV
+TSO RETP -> options -> 2 -> 2 -> Place cursor at start of command line.(ZRETPOSC env. variable)
