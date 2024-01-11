@@ -17,4 +17,8 @@ setting -> function keys -> 9 (disable)
 set PF2 , PF14 to NOP
 set PF9  to SWAP NEXT
 set PF21 to SWAP PREV
-TSO RETP -> options -> 2 -> 2 -> Place cursor at start of command line.(ZRETPOSC env. variable)
+TSO RETP -> options -> 2 -> 2 -> Place cursor at start of command line.
+(ZRETPOSC env. variable)
+
+
+TSO EXEC 'TSOXA13.ES52.REXXLIB(ALTLIB)'

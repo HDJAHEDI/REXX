@@ -24,7 +24,7 @@ Language=United-States
 DefaultKeyboard=C:\Users\IBM\REXX\Keymap.kmp
 IBMDefaultKeyboard=N
 [LastExitView]
-A=4 66 0 1056 836 7 13 26 400 0 IBM3270— 37
+A=4 435 287 976 770 7 13 26 400 0 IBM3270— 37
 [Window]
 ViewFlags=CF00
 CaptionFormat=2E -
