@@ -1,0 +1,47 @@
+//PARSE000 JOB (00000001),MSGCLASS=Q,NOTIFY=TSOXA13
+//*  Output class Q is the HELD output class                            00020000
+//*  Need help - sample JCL is in the REXX User's Guide                 00030000
+//REXXLAB EXEC PGM=IKJEFT01,                                            00040000
+//             PARM='REXXTRY'                                           00051000
+//SYSTSPRT  DD SYSOUT=*                                                 00050000
+//SYSEXEC   DD DISP=SHR,DSN=TSOXA13.ES52.EXEC                           00060000
+//          DD DISP=SHR,DSN=D80WW.ES52V5.RESOURCE.EXEC                  00060000
+//SYSTSIN   DD DATA,DLM=$$                                              00080000
+QUOTE = 'EXPERIENCE IS THE BEST TEACHER.';
+PARSE VAR QUOTE WORD1 WORD2 WORD3;
+SAY   WORD1;
+SAY   WORD2;
+SAY   WORD3;
+PARSE VAR QUOTE WORD1 WORD2 WORD3 WORD4 WORD5 WORD6;
+SAY   WORD1;
+SAY   WORD2;
+SAY   WORD3;
+SAY   WORD4;
+SAY   WORD5;
+SAY   WORD6;
+PARSE VAR QUOTE WORD1 WORD2 15 WORD3 WORD4;
+SAY   WORD1;
+SAY WORD2;
+SAY WORD3;
+SAY WORD4;
+PARSE VAR QUOTE 15 V1 +16 =12 V2 +2 1 V3 +10;
+SAY V1;
+SAY V2;
+SAY V3;
+PARSE VAR QUOTE 1 V1 +11 V2 +6 V3 -4 V4;
+SAY V1;
+SAY V2;
+SAY V3;
+SAY V4;
+DELIM = 7;
+PARSE VAR QUOTE 1 V1 (DELIM) V2;
+SAY V1;
+SAY V2;
+PARSE VAR QUOTE 1 V1 =(DELIM) V2 +6 V3;
+SAY V1;
+SAY V2;
+SAY V3;
+EXIT
+$$
+/*
+

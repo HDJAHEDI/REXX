@@ -1,18 +1,93 @@
 /* REXX */
+/*
+
+  Fill in the answers. You may run this exec at any time to see
+  your answers.
+
+  When you wish to compare answers, run %PARSCHK.
+
+*/
+
 /* -------------------------------------------------------------------*/
-SIGNAL  ON  ERROR   NAME SIGNAL_ERROR  ;
-SIGNAL  ON  SYNTAX  NAME SIGNAL_SYNTAX ;
-SIGNAL  ON  NOVALUE NAME SIGNAL_NOVALUE;
-SIGNAL  ON  FAILURE NAME SIGNAL_FAILURE;
-SIGNAL  ON  HALT    NAME SIGNAL_HALT   ;
-PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
+SIGNAL ON ERROR   NAME SIGNAL_ERROR  ;
+SIGNAL ON SYNTAX  NAME SIGNAL_SYNTAX ;
+SIGNAL ON NOVALUE NAME SIGNAL_NOVALUE;
+SIGNAL ON FAILURE NAME SIGNAL_FAILURE;
+SIGNAL ON HALT    NAME SIGNAL_HALT   ;
+PARSE  SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
 /* ADD YOUR CODE HERE */
-CMD = "SUBCOM LINK";
-ADDRESS MVS   CMD ;
-SAY '++> RC: ' || RC;
+s1 = 'Themholepispinqonepwallmonly'
+s2 = 'When in doubt, quote it'
+s3 = 'An exec in time saves nine'
+s4 = 'All that glitters is not REXX'
+s5 = Time() Date()
+
+Say "1. From the following expression, put the second word into A,"
+Say "   the fourth word into B and the fifth word into C."
+
+                                             /* code a template */
+    Parse Value Translate(s1,,'mpq')  With . A . B C .;
+  SAY Translate(s1,,'mpq');
+  Say a b c;
+
+Say "2. From the variable S2 put all data before the comma into D"
+Say "   and all data after the comma into E."
+                                            /* code a template   */
+    Parse Var s2 D ',' E
+  SAY S2
+  Say d
+  Say e
+
+Say "3. From the variable S2, put columns 18 and 19 into F."
+
+                                            /* code a template   */
+    Parse Var s2 =18 F +2
+  SAY S2
+  Say f
+
+Say "4. Parse the variable S4 based on the current content of the"
+Say "   variable F. Put everything after that match point into G."
+
+                                            /* code a template   */
+    Parse Var s4 . (F) G
+  SAY S4;
+  SAY 'F: ' || F;
+  Say g;
+
+Say "5. From the variable s5, put the hours into H, minutes into M,"
+Say "   and seconds into S."
+
+                                            /* code a template   */
+    Parse Var s5 H ':' M ':' S .
+  SAY  S5
+  Say 'hours='h', minutes='m', seconds='s
+
+Say "6. From S3, put the first 21 columns into I, and"
+Say "   columns 14 and 15 into J."
+
+                                            /* code a template   */
+    Parse Var s3 1 I +21 =14 J +2
+  SAY 'S3: <'   || S3 || '>';
+  Say 'i j : <' ||  i || ' ' || j || '>'
+
+Say "7. From S5, put the third word into K and the second word into L."
+
+                                            /* code a template   */
+    Parse Var s5 . .  K . =1 . L .
+  SAY 'S5: <' || S5 || '>';
+  Say k l
+
+  SAY ''
+  SAY 'END OF PAGE'
+Say "8. From variable S4, put the 6 columns preceding the 's' into N."
+                                            /* code a template   */
+    Parse Var s4 =6 N 's';
+  SAY 'S4: <' || S4 || '>';
+  Say n
+
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:

@@ -5,14 +5,34 @@ SIGNAL  ON  SYNTAX  NAME SIGNAL_SYNTAX ;
 SIGNAL  ON  NOVALUE NAME SIGNAL_NOVALUE;
 SIGNAL  ON  FAILURE NAME SIGNAL_FAILURE;
 SIGNAL  ON  HALT    NAME SIGNAL_HALT   ;
-PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
+PARSE   SOURCE      #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
 /* ADD YOUR CODE HERE */
-CMD = "SUBCOM LINK";
-ADDRESS MVS   CMD ;
-SAY '++> RC: ' || RC;
+PARSE ARG CMD CMD_ARGS;
+SAY '++> CMD      : ' || CMD;
+SAY '++> Arguments: ' || CMD_ARGS;
+/* -------------------------------------------------------------------*/
+REC.='';
+CMD_RC = OUTTRAP('REC.','*','CONCAT','0');
+SIGNAL OFF ERROR;
+ADDRESS TSO CMD CMD_ARGS;
+SAY '++> TSO/E CMD RC: ' || RC;
+SIGNAL ON  ERROR   NAME SIGNAL_ERROR  ;
+CMD_RC = OUTTRAP('OFF');
+/* -------------------------------------------------------------------*/
+DSN_DATE = 'D' || SUBSTR(DATE('S'),1,4) || SUBSTR(DATE('J'),3,3);
+PARSE VALUE TIME() WITH HH ':' MM ':' SS .
+DSN_TIME = 'T' || HH ||  MM ||  SS;
+DSN = USERID() || '.ES52.EX114.OUTPUT.' || DSN_DATE || '.' || DSN_TIME;
+SAY '##> DSN: ' || DSN;
+/*ADDRESS TSO "FREE   DDNAME(OUTDD)";*/
+ADDRESS TSO "ALLOC  DDNAME(OUTDD) DA('" || DSN || "') MOD SPACE(5,5)",
+         || "TRACKS RELEASE LRECL(80) RECFM(F) DSORG(PS) REUSE";
+ADDRESS MVS "EXECIO * DISKW OUTDD ( STEM REC. OPEN FINIS )";
+ADDRESS TSO "FREE   DDNAME(OUTDD)";
+ADDRESS ISPEXEC "BROWSE DATASET('" || DSN || "';";
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:

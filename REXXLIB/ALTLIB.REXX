@@ -1,0 +1,25 @@
+/*REXX----------------------------------------------------------------*/
+/*     INTERACTIVE                                                    */
+/*--------------------------------------------------------------------*/
+
+   "ALTLIB ACT APPL(CLIST) DS('"userid()".ES52.REXXLIB')"
+ADDRESS ISPEXEC
+"LIBDEF ISPPLIB DATASET ID('D80WW.ES52V5.RESOURCE.EXEC')"
+"LIBDEF ISPMLIB DATASET ID('D80WW.ES52V5.RESOURCE.EXEC')"
+"LIBDEF ISPSLIB DATASET ID('D80WW.ES52V5.RESOURCE.EXEC')"
+"LIBDEF ISPTLIB DATASET ID('D80WW.ES52V5.RESOURCE.EXEC')"
+"LIBDEF ISPLLIB DATASET ID('"userid()".ES52.REXXMOD'",
+                          "'REXX.SEAGLPA' )"
+
+"SELECT PANEL(ISR@PRIM) NEWAPPL(ISP) PASSLIB"
+
+"LIBDEF ISPPLIB"
+"LIBDEF ISPMLIB"
+"LIBDEF ISPSLIB"
+"LIBDEF ISPTLIB"
+"LIBDEF ISPLLIB"
+
+ADDRESS TSO
+"ALTLIB DEACT APPL(CLIST)"
+EXIT
+

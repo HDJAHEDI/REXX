@@ -1,0 +1,14 @@
+/* REXX */
+/************** REXX ***************/
+/* */
+/* EDIT MACRO */
+/* */
+/************** REXX ***************/
+"ISREDIT MACRO "
+"ISREDIT CHANGE TSOCH££" USERID() " ALL "
+ ZEDSMSG = "CHANGED"
+ ZEDLMSG = "YOUR USERID WAS CHANGED"
+ ADDRESS ISPEXEC "SETMSG MSG(ISRZ000)"
+ "ISREDIT CURSOR = 1 1"
+ "ISREDIT RESET"
+

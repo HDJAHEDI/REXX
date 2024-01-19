@@ -19,6 +19,6 @@ set PF9  to SWAP NEXT
 set PF21 to SWAP PREV
 TSO RETP -> options -> 2 -> 2 -> Place cursor at start of command line.
 (ZRETPOSC env. variable)
-
+SD;ST;SET DISPLAY ON/OFF
 
 TSO EXEC 'TSOXA13.ES52.REXXLIB(ALTLIB)'

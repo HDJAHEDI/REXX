@@ -5,14 +5,70 @@ SIGNAL  ON  SYNTAX  NAME SIGNAL_SYNTAX ;
 SIGNAL  ON  NOVALUE NAME SIGNAL_NOVALUE;
 SIGNAL  ON  FAILURE NAME SIGNAL_FAILURE;
 SIGNAL  ON  HALT    NAME SIGNAL_HALT   ;
-PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
+PARSE   SOURCE      #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
 /* ADD YOUR CODE HERE */
-CMD = "SUBCOM LINK";
-ADDRESS MVS   CMD ;
-SAY '++> RC: ' || RC;
+PARSE ARG ARG0 .;
+SAY '++> Argument: ' || ARG0;
+/* -------------------------------------------------------------------*/
+SYSDSN_MSG = SYSDSN('''' || ARG0 || '''');
+SAY '++> RC        : ' || RC     ;
+SAY '++> SYSDSN_MSG: ' || SYSDSN_MSG;
+IF SYSDSN_MSG = 'OK' THEN DO
+   LISTDSI_RC = LISTDSI('''' || ARG0 || '''' 'directory' 'multivol',
+                        'racf' 'recall' 'smsinfo');
+   IF LISTDSI_RC = 0 THEN DO
+      SAY '++> SYSDSNAME     : ' || SYSDSNAME;
+      SAY '++> SYSVOLUME     : ' || SYSVOLUME;
+      SAY '++> SYSUNIT       : ' || SYSUNIT;
+      SAY '++> SYSDSORG      : ' || SYSDSORG;
+      SAY '++> SYSRECFM      : ' || SYSRECFM;
+      SAY '++> SYSLRECL      : ' || SYSLRECL;
+      SAY '++> SYSBLKSIZE    : ' || SYSBLKSIZE;
+      SAY '++> SYSKEYLEN     : ' || SYSKEYLEN ;
+      SAY '++> SYSUSED       : ' || SYSUSED   ;
+      SAY '++> SYSUSEDPAGES  : ' || SYSUSEDPAGES;
+      SAY '++> SYSPRIMARY    : ' || SYSPRIMARY;
+      SAY '++> SYSSECONDS    : ' || SYSSECONDS;
+      SAY '++> SYSUNITS      : ' || SYSUNITS;
+      SAY '++> SYSEXTENTS    : ' || SYSEXTENTS;
+      SAY '++> SYSUSEDEXTENTS: ' || SYSUSEDEXTENTS;
+      SAY '++> SYSREFDATE    : ' || SYSREFDATE;
+      SAY '++> SYSEXDATE     : ' || SYSEXDATE;
+      SAY '++> SYSPASSWORD   : ' || SYSPASSWORD;
+      SAY '++> SYSRACFA      : ' || SYSRACFA;
+      SAY '++> SYSUPDATED    : ' || SYSUPDATED;
+      SAY '++> SYSTRKSCYL    : ' || SYSTRKSCYL;
+      SAY '++> SYSBLKSTRK    : ' || SYSBLKSTRK;
+      SAY '++> SYSADIRBLK    : ' || SYSADIRBLK;
+      SAY '++> SYSUDIRBLK    : ' || SYSUDIRBLK;
+      SAY '++> SYSMEMBERS    : ' || SYSMEMBERS;
+      SAY '++> SYSDSSMS      : ' || SYSDSSMS;
+      SAY '++> SYSDATACLASS  : ' || SYSDATACLASS;
+      SAY '++> SYSSTORCLASS  : ' || SYSSTORCLASS;
+      SAY '++> SYSMGMTCLASS  : ' || SYSMGMTCLASS;
+      SAY '++> SYSSEQDSNTYPE : ' || SYSSEQDSNTYPE;
+      SAY '++> SYSEATTR      : ' || SYSEATTR;
+      SAY '++> SYSEADSCB     : ' || SYSEADSCB;
+      SAY '++> SYSALLOCPAGES : ' || SYSALLOCPAGES;
+      SAY '++> SYSUSEDPERCENT: ' || SYSUSEDPERCENT;
+      SAY '++> SYSNUMVOLS    : ' || SYSNUMVOLS;
+      SAY '++> SYSCREATETIME : ' || SYSCREATETIME;
+      SAY '++> SYSCREATEJOB  : ' || SYSCREATEJOB;
+      SAY '++> SYSCREATESTEP : ' || SYSCREATESTEP;
+      SAY '++> SYSDSVERSION  : ' || SYSDSVERSION;
+      SAY '++> SYSENCRYPT    : ' || SYSENCRYPT;
+      SAY '++> SYSKEYLABEL   : ' || SYSKEYLABEL;
+      SAY '++> SYSMAXGENS    : ' || SYSMAXGENS;
+   END
+   ELSE DO
+      SAY '++> SYSREASON     : ' || SYSREASON;
+      SAY '++> SYSMSGLVL1    : ' || SYSMSGLVL1;
+      SAY '++> SYSMSGLVL2    : ' || SYSMSGLVL2;
+   END
+END
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:
