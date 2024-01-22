@@ -9,65 +9,21 @@ PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
-DSN_DATE = 'D' || SUBSTR(DATE('S'),1,4) || SUBSTR(DATE('J'),3,3);
-PARSE VALUE TIME() WITH HH ':' MM ':' SS .
-DSN_TIME = 'T' || HH ||  MM ||  SS;
-DSN = USERID() || '.ES52.LISTDD.OUTPUT.' || DSN_DATE || '.',
-               || DSN_TIME;
-SAY '##> DSN: ' || DSN;
-/*ADDRESS TSO "FREE   DDNAME(OUTDD)";*/
-ADDRESS TSO "ALLOC  DDNAME(OUTDD) DA('" || DSN || "') MOD SPACE(5,5)",
-         || "TRACKS RELEASE LRECL(80) RECFM(F) DSORG(PS) REUSE";
-/* -------------------------------------------------------------------*/
-INREC.='';
-CMD_RC = OUTTRAP('INREC.','*','CONCAT','1');
-/* SIGNAL OFF ERROR; */
-ADDRESS TSO "LISTALC STATUS SYSNAMES";
-SAY '++> TSO/E CMD RC: ' || RC;
-SIGNAL ON  ERROR   NAME SIGNAL_ERROR  ;
-CMD_RC = OUTTRAP('OFF');
-/* -------------------------------------------------------------------*/
-TEMPREC   = '';
-TEMPREC.0 =  0;
-J = 0;
-DO  I = 1 TO INREC.0
-/* SAY '**>' RIGHT(I,4,'0') ': <' || INREC.I || '>'; */
- IF    SUBSTR(INREC.I,1,2) = '  '  THEN DO
-  IF   SUBSTR(INREC.I,3,1) = ' '   THEN DO
-   TEMPREC.J.DISP   = SPACE(INREC.I);
-   TEMPREC.J.DDNAME = COPIES('-',8) ;
-  END
-  ELSE DO
-   PARSE VALUE SPACE(INREC.I) WITH TEMPREC.J.DDNAME TEMPREC.J.DISP;
-  END
- END
- ELSE  DO
-  J = J + 1;
-  TEMPREC.0 = J
-  TEMPREC.J.DDNAME = COPIES('-', 8);
-  TEMPREC.J.DISP   = COPIES('-',13);
-  PARSE VALUE SPACE(INREC.I) WITH TEMPREC.J.DSN TEMPREC.J.DDNAME;
- END
+/* ADD YOUR CODE HERE */
+I          =  0;
+INPUT_ARGS = '';
+PARM       = '';
+PARMS      = '';
+PARSE  ARG INPUT_ARGS;
+DO   WHILE INPUT_ARGS \= ''
+ PARSE VAR INPUT_ARGS PARM ':' INPUT_ARGS
+ I = I + 1;
+ PARMS.I = PARM;
+END
+PARMS.0  = I;
+DO  I = 1  TO PARMS.0
+ CALL 'AVG' PARMS.I
 END I
-/* -------------------------------------------------------------------*/
-OUTREC.   = '';
-OUTREC.0  = J + 2;
-OUTREC.1  = 'DDNAME  ' || ' ' || 'DISP         ' || ' ' || 'DSN';
-OUTREC.2  = COPIES('-',8) || ' ' || COPIES('-',13) || ' ' ||,
-          COPIES('-',57);
-DO I = 1 TO  TEMPREC.0
- K = I + 2 ;
- OUTREC.K =,
- TEMPREC.I.DDNAME || COPIES(' ', 8 - LENGTH(TEMPREC.I.DDNAME)),
- TEMPREC.I.DISP   || COPIES(' ',13 - LENGTH(TEMPREC.I.DISP  )),
- TEMPREC.I.DSN;
-/* SAY '**>' RIGHT(I,4,'0') ':' OUTREC.I;*/
-END I
-/* -------------------------------------------------------------------*/
-ADDRESS MVS "EXECIO * DISKW OUTDD ( STEM OUTREC. OPEN FINIS )";
-ADDRESS TSO "FREE   DDNAME(OUTDD)";
-SAY '##> PRESS ENTER TO CONTINUE ... ';
-ADDRESS ISPEXEC "BROWSE DATASET('" || DSN || "';";
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:
@@ -75,15 +31,6 @@ EXIT_0:
 */
 SAY '++> [' || #NAME || '] MODULE NORMAL END.';
 EXIT 0;
-/* -------------------------------------------------------------------*/
-PARSE_DISP:
-PARSE  ARG STR_0;
-RETURN TRIM(STR_0);
-/* -------------------------------------------------------------------*/
-PARSE_DDNAME:
-PARSE  ARG STR_0;
-PARSE  VALUE TRIM(STR_0) WITH STR_1 STR_2;
-RETURN STR_1 STR_2;
 /* -------------------------------------------------------------------*/
 SIGNAL_SYNTAX:
 S_SG = SIGL;

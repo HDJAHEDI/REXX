@@ -9,12 +9,24 @@ PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
+INPUT_DSN    = '';
+INPUT_DDNAME = '';
+PARSE ARG INPUT_ARG;
+IF  INPUT_ARG = '#' THEN DO
+ SAY '??> ENTER DATASET NAME: '
+ PARSE EXTERNAL INPUT_DSN;
+END
+IF  INPUT_ARG = '$' THEN DO
+ SAY '??> ENTER DDNAME: '
+ PARSE EXTERNAL INPUT_DDNAME;
+END
+/* -------------------------------------------------------------------*/
 DSN_DATE = 'D' || SUBSTR(DATE('S'),1,4) || SUBSTR(DATE('J'),3,3);
 PARSE VALUE TIME() WITH HH ':' MM ':' SS .
 DSN_TIME = 'T' || HH ||  MM ||  SS;
-DSN = USERID() || '.ES52.LISTDD.OUTPUT.' || DSN_DATE || '.',
+DSN = USERID() || '.ES52.LISTDD01.OUTPUT.' || DSN_DATE || '.',
                || DSN_TIME;
-SAY '##> DSN: ' || DSN;
+SAY '##> OUTPUT DSN: ' || DSN;
 /*ADDRESS TSO "FREE   DDNAME(OUTDD)";*/
 ADDRESS TSO "ALLOC  DDNAME(OUTDD) DA('" || DSN || "') MOD SPACE(5,5)",
          || "TRACKS RELEASE LRECL(80) RECFM(F) DSORG(PS) REUSE";
@@ -26,6 +38,13 @@ ADDRESS TSO "LISTALC STATUS SYSNAMES";
 SAY '++> TSO/E CMD RC: ' || RC;
 SIGNAL ON  ERROR   NAME SIGNAL_ERROR  ;
 CMD_RC = OUTTRAP('OFF');
+/* -------------------------------------------------------------------*/
+IF INPUT_DSN \= '' THEN DO
+ SAY '++> SEARCH FOR DSN: <' || INPUT_DSN || '>';
+END
+IF INPUT_DDNAME \= '' THEN DO
+ SAY '++> SEARCH FOR DDNAME: <' || INPUT_DDNAME || '>';
+END
 /* -------------------------------------------------------------------*/
 TEMPREC   = '';
 TEMPREC.0 =  0;
@@ -51,16 +70,45 @@ DO  I = 1 TO INREC.0
 END I
 /* -------------------------------------------------------------------*/
 OUTREC.   = '';
-OUTREC.0  = J + 2;
 OUTREC.1  = 'DDNAME  ' || ' ' || 'DISP         ' || ' ' || 'DSN';
-OUTREC.2  = COPIES('-',8) || ' ' || COPIES('-',13) || ' ' ||,
-          COPIES('-',57);
+OUTREC.2  = COPIES('-',08) || ' ' || COPIES('-',13) || ' ' ||,
+            COPIES('-',57);
+K         = 2;
+OUTREC.0  = K;
 DO I = 1 TO  TEMPREC.0
- K = I + 2 ;
- OUTREC.K =,
- TEMPREC.I.DDNAME || COPIES(' ', 8 - LENGTH(TEMPREC.I.DDNAME)),
- TEMPREC.I.DISP   || COPIES(' ',13 - LENGTH(TEMPREC.I.DISP  )),
- TEMPREC.I.DSN;
+ IF  INPUT_DSN \= '' THEN DO
+  IF INPUT_DSN \= TEMPREC.I.DSN THEN DO
+   NOP;
+  END
+  ELSE DO
+   K = K + 1 ;
+   OUTREC.K =,
+   TEMPREC.I.DDNAME || COPIES(' ', 8 - LENGTH(TEMPREC.I.DDNAME)),
+   TEMPREC.I.DISP   || COPIES(' ',13 - LENGTH(TEMPREC.I.DISP  )),
+   TEMPREC.I.DSN;
+  END
+ END
+ ELSE  DO
+  IF  INPUT_DDNAME \= '' THEN DO
+   IF INPUT_DDNAME \= TEMPREC.I.DDNAME THEN DO
+    NOP;
+   END
+   ELSE DO
+    K = K + 1 ;
+    OUTREC.K =,
+    TEMPREC.I.DDNAME || COPIES(' ', 8 - LENGTH(TEMPREC.I.DDNAME)),
+    TEMPREC.I.DISP   || COPIES(' ',13 - LENGTH(TEMPREC.I.DISP  )),
+    TEMPREC.I.DSN;
+   END
+  END
+  ELSE DO
+   K = K + 1 ;
+   OUTREC.K =,
+   TEMPREC.I.DDNAME || COPIES(' ', 8 - LENGTH(TEMPREC.I.DDNAME)),
+   TEMPREC.I.DISP   || COPIES(' ',13 - LENGTH(TEMPREC.I.DISP  )),
+   TEMPREC.I.DSN;
+  END
+ END
 /* SAY '**>' RIGHT(I,4,'0') ':' OUTREC.I;*/
 END I
 /* -------------------------------------------------------------------*/

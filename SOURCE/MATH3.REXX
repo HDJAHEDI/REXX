@@ -1,8 +1,11 @@
 /* REXX */
 /* -------------------------------------------------------------------*/
 PARSE SOURCE  #OS #CALL #NAME #SYSID #DSN #REST
-ADDRESS TSO "CLRSCRN";
-SAY '** <' || #NAME || '> MODULE STARTED.';
+IF #CALL = 'COMMAND' THEN
+ DO
+   ADDRESS TSO "CLRSCRN";
+   SAY '** <' || #NAME || '> MODULE STARTED.';
+END
 /* -------------------------------------------------------------------*/
 PARSE ARG A B;
 DO WHILE A ¬= 'EXIT'
@@ -26,11 +29,16 @@ DO WHILE A ¬= 'EXIT'
         SAY '!! Second number is 0: division cannot be done.';
       END
    END
+  IF #CALL = 'COMMAND' THEN DO
    SAY COPIES('-',79)
    SAY '>> Please enter two numbers (a, b):';
    PARSE EXTERNAL A B;
+   SAY '** <' || #NAME || '> MODULE STARTED.';
+  END
+  ELSE DO
+   A = 'EXIT';
+  END
 END /* DO WHILE */
-SAY '>> Goodbye!'
 
 CALL EXIT_0;
 
@@ -44,7 +52,10 @@ EXIT_0:
   SAY '>> #DSN  : ' #DSN
   SAY '>> #REST : ' #REST
 */
-  SAY '** <' || #NAME || '> MODULE NORMAL END.';
+  IF #CALL = 'COMMAND' THEN DO
+   SAY '>> Goodbye!'
+   SAY '** <' || #NAME || '> MODULE NORMAL END.';
+  END
   EXIT 0;
 /* -------------------------------------------------------------------*/
 EXIT_?:
