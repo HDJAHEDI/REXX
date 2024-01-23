@@ -5,35 +5,60 @@ SIGNAL  ON  SYNTAX  NAME SIGNAL_SYNTAX ;
 SIGNAL  ON  NOVALUE NAME SIGNAL_NOVALUE;
 SIGNAL  ON  FAILURE NAME SIGNAL_FAILURE;
 SIGNAL  ON  HALT    NAME SIGNAL_HALT   ;
-PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
+PARSE   SOURCE      #OS  #CALL #NAME #SYSID #DSN #REST;
+/*
 ADDRESS TSO "CLRSCRN";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
+*/
 /* -------------------------------------------------------------------*/
 /* ADD YOUR CODE HERE */
-I          =  0;
-INPUT_ARGS = '';
-PARM       = '';
-ARGS       = '';
-PARMS      = '';
-PARSE  ARG INPUT_ARGS;
-DO   WHILE INPUT_ARGS \= ''
- PARSE VAR INPUT_ARGS PARM ':' INPUT_ARGS
- I = I + 1;
- PARSE VAR PARM PROG ' ' ARGS
- PROGS.I = PROG;
- PARMS.I = ARGS;
-END
-PROGS.0  = I;
-PARMS.0  = I;
-DO  I = 1  TO PROGS.0
- INTERPRET 'CALL'  PROGS.I   PARMS.I;
+VAR#PRM = '';
+VAR#MBR = '';
+VAR#DSN = '';
+VAR#LIN = '';
+VAR#ROW = '';
+VAR#COL = '';
+VAR#STR = '';
+ADDRESS ISPEXEC "ISREDIT MACRO (VAR#PRM)";
+ADDRESS ISPEXEC "CONTROL ERRORS RETURN";
+ADDRESS ISPEXEC "ISREDIT (VAR#MBR) = MEMBER ";
+ADDRESS ISPEXEC "ISREDIT (VAR#DSN) = DATASET";
+ADDRESS ISPEXEC "ISREDIT (VAR#LIN) = LINENUM .ZCSR";
+ADDRESS ISPEXEC "ISREDIT (VAR#STR) = LINE    .ZCSR";
+ADDRESS ISPEXEC "ISREDIT (VAR#ROW, VAR#COL) = CURSOR ";
+/*
+SAY '##> VAR#PRM: ' VAR#PRM;
+SAY '##> VAR#MBR: ' VAR#MBR;
+SAY '##> VAR#DSN: ' VAR#DSN;
+SAY '##> VAR#LIN: ' VAR#LIN;
+SAY '##> VAR#ROW: ' VAR#ROW;
+SAY '##> VAR#COL: ' VAR#COL;
+SAY '##> VAR#STR: ' VAR#STR;
+*/
+WORD_COUNT = WORDS(VAR#STR);
+DO  I = 1 TO WORD_COUNT
+    WORD_BGN = WORDINDEX(VAR#STR, I)
+    WORD_END = WORDINDEX(VAR#STR, I) + WORDLENGTH(VAR#STR, I) - 1
+    IF  WORD_BGN <= VAR#COL ,
+     &  WORD_END >= VAR#COL THEN DO
+     /*
+     SAY '<' || WORD(VAR#STR, I) || '>,<' ||,
+     SUBSTR(VAR#STR,WORD_BGN,WORDLENGTH(VAR#STR, I)) || '>';
+     */
+     VAR#NAM = WORD(VAR#STR, I);
+     VAR#STR = 'SAY ''##> ' || VAR#NAM || ': '' || ',
+            || VAR#NAM;
+     ADDRESS ISPEXEC "ISREDIT LINE_AFTER .ZCSR = (VAR#STR)";
+     LEAVE I
+    END
 END I
+ADDRESS ISPEXEC "ISREDIT CURSOR = (VAR#ROW, VAR#COL)";
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:
 /*
-*/
 SAY '++> [' || #NAME || '] MODULE NORMAL END.';
+*/
 EXIT 0;
 /* -------------------------------------------------------------------*/
 SIGNAL_SYNTAX:
