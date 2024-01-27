@@ -24,7 +24,7 @@ END
 DSN_DATE = 'D' || SUBSTR(DATE('S'),1,4) || SUBSTR(DATE('J'),3,3);
 PARSE VALUE TIME() WITH HH ':' MM ':' SS .
 DSN_TIME = 'T' || HH ||  MM ||  SS;
-DSN = USERID() || '.ES52.LISTDD01.OUTPUT.' || DSN_DATE || '.',
+DSN = USERID() || '.ES52.LISTDD01.' || DSN_DATE || '.',
                || DSN_TIME;
 SAY '##> OUTPUT DSN: ' || DSN;
 /*ADDRESS TSO "FREE   DDNAME(OUTDD)";*/

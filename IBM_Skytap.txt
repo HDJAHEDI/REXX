@@ -7,6 +7,11 @@ git clone https://github.com/HDJAHEDI/REXX
 
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
+Make a small change on this file.
+git -add -A 
+git -commit -m'New Installation'
+git -push
+Use Browser Login
 
 open VScode
 Install Git Lenz extesion
@@ -21,8 +26,9 @@ setting -> function keys -> 9 (disable)
 set PF2 , PF14 to NOP
 set PF9  to SWAP NEXT
 set PF21 to SWAP PREV
-TSO RETP -> options -> 2 -> 2 -> Place cursor at start of command line.
+RETP -> options -> 2 -> 2 -> Place cursor at start of command line.
 (ZRETPOSC env. variable)
 SD;ST;SET DISPLAY ON/OFF
 
 TSO EXEC 'TSOXA13.ES52.REXXLIB(ALTLIB)'
+TSO EXEC 'TSOXA13.ES52.REXXLIB(ALLOCLIB)'
