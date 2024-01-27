@@ -4,6 +4,10 @@ Download and Install Git desktop
 Login to Github account
 open Git bash:
 git clone https://github.com/HDJAHEDI/REXX
+
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
 open VScode
 Install Git Lenz extesion
 Install Rexx language extension (Broadcom)
