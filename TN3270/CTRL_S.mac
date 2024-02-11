@@ -1,0 +1,10 @@
+*********************************************************
+* SAVE MEMBER
+* Vista TN3270 macro generated on 2024-02-11 14:44:18
+*********************************************************
+
+Wait(20,Status="Unlocked")
+Key("PF24")
+Wait(20,Status="Unlocked")
+Type("RES;SAVE;")
+Key("Enter")
