@@ -7,7 +7,7 @@ git clone https://github.com/HDJAHEDI/REXX
 
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
-Make a small change on this file.
+Make a small change on this file..
 git -add -A 
 git -commit -m'New Installation'
 git -push
