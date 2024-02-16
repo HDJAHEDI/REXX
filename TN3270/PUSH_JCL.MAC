@@ -1,0 +1,9 @@
+*********************************************************
+* PUSH TO Z00958.PROJ0000.JCL
+* Vista TN3270 macro generated on 2024-02-11 15:21:20
+*********************************************************
+
+SendFile("C:\Users\NIMAD\REXX\JCL\JCL1.JCL    ","'Z00958.PROJ0000.JCL(JCL1)'    ","TSO","TEXT","REPLACE")
+SendFile("C:\Users\NIMAD\REXX\JCL\JCL2.JCL    ","'Z00958.PROJ0000.JCL(JCL2)'    ","TSO","TEXT","REPLACE")
+SendFile("C:\Users\NIMAD\REXX\JCL\JCL3.JCL    ","'Z00958.PROJ0000.JCL(JCL3)'    ","TSO","TEXT","REPLACE")
+SendFile("C:\Users\NIMAD\REXX\JCL\PARSE000.JCL","'Z00958.PROJ0000.JCL(PARSE000)'","TSO","TEXT","REPLACE")

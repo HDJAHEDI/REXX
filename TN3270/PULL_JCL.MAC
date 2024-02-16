@@ -1,0 +1,9 @@
+*********************************************************
+* PULL FROM Z00958.PROJ0000.JCL
+* Vista TN3270 macro generated on 2024-02-11 15:21:20
+*********************************************************
+
+ReceiveFile("'Z00958.PROJ0000.JCL(JCL1)'    ","C:\Users\NIMAD\REXX\JCL\JCL1.JCL    ","TSO","TEXT","REPLACE")
+ReceiveFile("'Z00958.PROJ0000.JCL(JCL2)'    ","C:\Users\NIMAD\REXX\JCL\JCL2.JCL    ","TSO","TEXT","REPLACE")
+ReceiveFile("'Z00958.PROJ0000.JCL(JCL3)'    ","C:\Users\NIMAD\REXX\JCL\JCL3.JCL    ","TSO","TEXT","REPLACE")
+ReceiveFile("'Z00958.PROJ0000.JCL(PARSE000)'","C:\Users\NIMAD\REXX\JCL\PARSE000.JCL","TSO","TEXT","REPLACE")
