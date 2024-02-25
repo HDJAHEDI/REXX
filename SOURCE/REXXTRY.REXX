@@ -35,7 +35,7 @@ _Restart:
   Signal On Syntax         /* trap user errors */
 
   Parse External _inst
-  Do While Translate(_inst) ¬= 'EXIT'
+  Do While Translate(_inst) /= 'EXIT'
     If _inst <> '' Then
       Do
         If _batch Then

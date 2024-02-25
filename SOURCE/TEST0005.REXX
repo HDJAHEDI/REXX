@@ -1,56 +1,37 @@
 /* REXX */
 /* -------------------------------------------------------------------*/
-SIGNAL ON  ERROR   NAME SIGNAL_ERROR  ;
-SIGNAL ON  SYNTAX  NAME SIGNAL_SYNTAX ;
-SIGNAL ON  NOVALUE NAME SIGNAL_NOVALUE;
-SIGNAL ON  FAILURE NAME SIGNAL_FAILURE;
-SIGNAL ON  HALT    NAME SIGNAL_HALT   ;
-PARSE      SOURCE  #OS  #CALL #NAME #SYSID #DSN #REST;
+SIGNAL  ON  ERROR   NAME SIGNAL_ERROR  ;
+SIGNAL  ON  SYNTAX  NAME SIGNAL_SYNTAX ;
+SIGNAL  ON  NOVALUE NAME SIGNAL_NOVALUE;
+SIGNAL  ON  FAILURE NAME SIGNAL_FAILURE;
+SIGNAL  ON  HALT    NAME SIGNAL_HALT   ;
+PARSE   SOURCE     #OS  #CALL #NAME #SYSID #DSN #REST;
 ADDRESS TSO "CALL 'Z00958.HLASM.LOAD(CLRSCR00)'";
 SAY '++> [' || #NAME || '] MODULE STARTED.';
 /* -------------------------------------------------------------------*/
 /* ADD YOUR CODE HERE */
-MSG0.  = '';
-MSG1.  = '';
-MSG2.  = '';
-
-ADDRESS     TSO "CONSPROF SOLDISPLAY(NO) SOLNUM(9999)";
-ADDRESS     TSO "CONSOLE  ACTIVATE";
-ADDRESS CONSOLE "CART     APP000";
-ADDRESS CONSOLE "DISPLAY  ASM";
-ADDRESS CONSOLE "CART     APP001";
-ADDRESS CONSOLE "DISPLAY  IPLINFO";
-ADDRESS CONSOLE "CART     APP002";
-ADDRESS CONSOLE "DISPLAY  TS," || USERID();
-ADDRESS CONSOLE "CART     APP003";
-ADDRESS CONSOLE "DISPLAY  A,OMVS";
-GET_RC        =  GETMSG('MSG0.','SOL','APP000',,30);
-GET_RC        =  GETMSG('MSG1.','SOL','APP001',,30);
-GET_RC        =  GETMSG('MSG2.','SOL','APP002',,30);
-GET_RC        =  GETMSG('MSG3.','SOL','APP003',,30);
-ADDRESS     TSO "CONSOLE  DEACTIVATE";
-DSN = USERID() || '.' || #NAME || '.OUT';
-ADDRESS TSO "ALLOC DDNAME(OUTDD) DA('" || DSN || "') MOD SPACE(5,5)",
-         || "TRACKS RELEASE LRECL(80) RECFM(F) DSORG(PS) REUSE";
-ADDRESS MVS "EXECIO * DISKW OUTDD (STEM MSG0. OPEN  )";
-ADDRESS MVS "EXECIO * DISKW OUTDD (STEM MSG1.       )";
-ADDRESS MVS "EXECIO * DISKW OUTDD (STEM MSG2.       )";
-ADDRESS MVS "EXECIO * DISKW OUTDD (STEM MSG3. FINIS )";
-ADDRESS TSO "FREE DDNAME(OUTDD)";
-PARSE VALUE MSG0.1 WITH . VAR_TIME .
-SAY 'It is now ' || TRANSLATE(VAR_TIME,':','.');
-SAY  MSG1.2
-PARSE VALUE MSG0.3 WITH . VAR_PERCENT . . VAR_DSN
-SAY 'The PLPA data set, ' || VAR_DSN || ', is ',
-  || VAR_PERCENT || ' full.'
-PARSE VALUE MSG2.4 WITH VAR_USERID .
-PARSE VALUE MSG2.9 WITH . '=' VAR_ASID .
-SAY  VAR_USERID || ' is running in Address Space ID ' || VAR_ASID || ','
-PARSE VALUE MSG2.5 WITH,
-. 'CT=' VAR_CPU 'ET=' VAR_HH '.' VAR_MM '.' VAR_SS .
-SAY  'and has been logged on for ' || VAR_HH ||' hours,  ',
- ||   VAR_MM  || ' minutes, and '  || VAR_SS ||' seconds,';
-SAY  'using ' VAR_CPU || ' CPU seconds.';
+ADR_CVT  = STORAGE(           10,04);
+ADR_NOP  = STORAGE( C2X(ADR_CVT),04);
+PTR_ASCB = C2D(ADR_NOP) + X2D('C');
+ADR_ASCB = STORAGE(D2X(PTR_ASCB),04);
+ADR_JOBN = C2D(ADR_ASCB) + X2D('B0');
+JOBNAME  = STORAGE(D2X(ADR_JOBN),08);
+SAY '++> The CVT address is:             <' || C2X(ADR_CVT ) || '>';
+SAY '++> The NEW/OLD Pointer address is: <' || C2X(ADR_NOP ) || '>';
+SAY '++> The ASCB            address is: <' || D2X(PTR_ASCB) || '>';
+SAY '++> The ASCB    Pointer address is: <' || C2X(ADR_ASCB) || '>';
+SAY '++> The JOBN            address is: <' || D2X(ADR_JOBN) || '>';
+SAY '++> The JOBNAME                 is: <' || C2X(JOBNAME)  || '>';
+ADR_CVT  = STORAGE(                   10 ,4)
+ADR_NOP  = STORAGE(D2X(C2D(ADR_CVT )    ),4)
+ADR_ASCB = STORAGE(D2X(C2D(ADR_NOP )+  4),4)
+ADR_JOBN = STORAGE(D2X(C2D(ADR_ASCB)+ 12),4)
+JOBNAME  = STORAGE(D2X(C2D(ADR_JOBN)    ),8)
+SAY '++> The CVT address is:             <' || C2X(ADR_CVT ) || '>';
+SAY '++> The NEW/OLD Pointer address is: <' || C2X(ADR_NOP ) || '>';
+SAY '++> The ASCB    Pointer address is: <' || C2X(ADR_ASCB) || '>';
+SAY '++> The JOBN            address is: <' || C2X(ADR_JOBN) || '>';
+SAY '++> The JOBNAME                 is: <' ||     JOBNAME   || '>';
 CALL EXIT_0;
 /* -------------------------------------------------------------------*/
 EXIT_0:

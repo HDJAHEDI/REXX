@@ -6,5 +6,6 @@
 Wait(20,Status="Unlocked")
 Key("PF24")
 Wait(20,Status="Unlocked")
+Key("EraseEndofField")
 Type("RES;SAVE;")
 Key("Enter")
